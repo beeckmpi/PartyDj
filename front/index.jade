@@ -1,0 +1,136 @@
+doctype html
+html(ng-app="partyDJ")
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    title= appName
+
+    for cssFile in cssFiles
+      link(rel="stylesheet", href=cssFile)
+    link(rel="src", href="/components/semantic-ui/dist/semantic.css")
+   
+    for jsFile in jsFiles
+      script(src=jsFile)
+    script(src="https://apis.google.com/js/client:platform.js", async, defer)
+    script(src="https://plus.google.com/js/client:plusone.js") 
+  body(ng-controller="MainController")
+    div.ui.fixed.inverted.large.menu      
+      a.item
+        i.sidebar.icon
+      div.item.logo
+        span(style="font-family:'Unica One', serif'")
+          a(href="/#", style="color:lightblue") PARTY
+        span(style="font-family:'Unica One', serif'")
+          a(href="/#", style="color:lightyellow; font-size:larger") DJ      
+      div.item.ui.search(ng-controller="videosController")
+        form(ng-submit="searchList(searchTerm)")
+          div.ui.transparent.inverted.icon.input
+            input#searchVideos.prompt(type="text", placeholder="search", ng-model="searchTerm", ng-change="search(searchTerm)")
+            i.search.icon.link
+        div.results
+      div.right.item
+        img#user-img(src="{{user.picture}}")
+    div.ui.left.inverted.overlay.labeled.sidebar.large
+      div.ui.menu.large.inverted
+        div.item
+          a(href="")
+            i.sidebar.icon
+        div.item.logo
+          span(style="font-family:'Unica One', serif'")
+            a(href="/#", style="color:lightblue") PARTY
+          span(style="font-family:'Unica One', serif'")
+            a(href="/#", style="color:lightyellow; font-size:larger") DJ
+      div.ui.vertical.large.menu.inverted
+        a.item 
+          i.home.icon
+          span Home
+        a.item 
+          i.users.icon
+          span Friends
+        div.item
+          i.list.icon 
+          span Playlists
+          div.menu
+            a.item 
+              i.heart.icon
+              span Favourites
+            a.item My Playlists
+            a.item Shared with me
+        
+    div#view(ng-view)
+
+    div#player_wrapper
+      div#player_back.show
+        div#player_frame
+          div.viewer(style="position: relative", ng-controller="videosViewController")
+            div#videoId(style="display:none")
+            div.videoIcons
+              i.icon.expand.inverted(style="display:inline-block; margin-right: 5px", ng-click="resize()")
+              i.icon.remove.inverted(style="display:inline-block;", ng-click="remove()")
+            div#playerWrapper(style="display: inline-block;position: relative")
+              div#player(style="display:inline-block;")
+              div.videoInfo
+                h5#video_title
+                div#video_author by &nbsp;
+                  a(href="#", target="_blank")
+                div#video_description
+                div(style="display:inline-block; margin-top: 7px")
+                  div.addToFavourites.addBtn.ui.tiny.red.button(ng-click="addToFavourites(videoId)", ng-if="addFavourite", style="margin-bottom: 5px")
+                    i.heart.icon
+                    span Add to favourites
+                   div.addToFavourites.addBtn.ui.tiny.red.button(ng-click="removeFromFavourites(videoId)", ng-if="removeFavourite", style="margin-bottom: 5px")
+                    i.heart.icon
+                    span Remove from favourites
+                  div.addToPlaylist.addBtn.ui.tiny.orange.button(ng-click="addToPlaylist(videoId)")
+                    i.list.icon
+                    span Add to playlist(s)
+    
+    div.ui.modal.inverted(ng-controller="videosPlaylistsController")
+      i.close.icon
+      div.modal-header
+        h3(style="display:inline-block") Add to playlist(s).
+        div.ui.tiny.blue.button(style="display:inline-block;float:right", ng-click="AddPlaylist(true)")
+          i.plus.icon
+          span Add new playlist
+        div.ui.small.icon.transparent.input(style="display:inline-block; text-align: right; margin-left:120px")
+          input#searchVideos.prompt(type="text", placeholder="search playlists", ng-model="searchPlayList", ng-change="searchPlaylist(searchPlayList)")
+          i.search.icon.link        
+      div.content
+        div.ui.one.column.centered.grid(style="margin: 0 0 0 0; position:relative")
+          div.column.addPlaylist(ng-class="{show: newPlaylist}", style="background:#eee; position: absolute; top: 0px; left:0px")
+            form.ui.form#addPlaylist
+              h4.ui.dividing.header Add playlist
+              div.ui.two.column.centered.grid
+                div.column
+                  div.field
+                    input(placeholder="Playlist name", type="text", ng-model="PlaylistForm.name", ng-minlength=5, required)
+                  div.field
+                    input(placeholder="Share playlist width..", type="text", ng-model="PlaylistForm.shareWith")
+                div.column
+                  div.field
+                    textarea(placeholder="Description", ng-model="PlaylistForm.description")
+              div.ui.one.column(style="margin-top: 5px;")       
+                div.ui.tiny.green.button(ng-click="AddPlaylist('form')", style="display:inline-block; float:right")
+                  span Add Playlist
+                div.ui.tiny.button(ng-click="AddPlaylist(false)", style="display:inline-block; float:right")
+                  span Back to playlists
+          div#playlists.two.column.centered.row(ng-class="{hide: newPlaylist}")
+            div.six.column My playlists
+              div.playlist(ng-repeat="playlist in user.playlists | filter:searchPlayList")
+                span(style="font-weight: bold") {{playlist.name}}
+                div created at {{playlist.createdAt}}
+            div.six.column Shared width me
+              div.playlist
+                span(style="font-weight: bold") Playlistos (255 videos)
+                div created at 09-23-2015 09:30am by Glenn
+              div.playlist
+                span(style="font-weight: bold") Partyhits 2015 (34 videos)
+                div created at 09-23-2015 09:30am by Koen
+              div.playlist
+                span(style="font-weight: bold") DirtyDozen (15 videos)
+                div created at 09-23-2015 09:30am by Maarten
+        {{modal.content}}
+    if preloadHTML
+      script(type="text/ng-template", id="#{preloadHTMLPath}")
+        != preloadHTML

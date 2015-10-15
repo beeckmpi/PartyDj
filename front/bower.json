@@ -1,0 +1,15 @@
+{
+  "name": "partyDJ",
+  "private": true,
+  "dependencies": {
+    "angular": "1.x",
+    "angular-route": "1.x",
+    "fastclick": "1.x",
+    "jquery": "2.1.x",
+    "jquery-placeholder": "2.x",
+    "jquery.cookie": "1.x",
+    "modernizr": "2.8.x",
+    "satelizer": "0.x",
+    "semantic-ui": "1.12.x"
+  }
+}

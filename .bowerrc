@@ -1,0 +1,5 @@
+{
+  "directory": "components",
+  "proxy": "http://proxy.vlaanderen.be:8080",
+  "https_proxy": "http://proxy.vlaanderen.be:8080"
+}

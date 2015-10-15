@@ -1,0 +1,25 @@
+<div id="search-container" ng-controller="videosListController">
+	<div id="selectedVideo" style="display:none"></div>
+	<article class="videolist" style="display:inline-block" ng-repeat="video in videos.items" id="{{video.myId}}">
+		<a class="tumb-href" data-toggle="modal" ng-click="loadVideo(video.id['videoId'])" data-target="#myModal">  			
+			<img class="video-thumb" src="{{video.snippet['thumbnails']['medium']['url']}}">
+		</a>    
+	  <div class="video-info">
+		  <div class="duration" style="float:right"></div>
+	    <div class="author">{{video.snippet['channelTitle']}}</div>
+			<div class="authorId" style=display:none>{{video.snippet['channelId']}}</div>
+	  </div>
+	  <div class="video-text">
+	  	<div class="title">    
+	      <a  ng-click="loadVideo(video.id['videoId'])"><strong>{{video.snippet['title']}}</strong></a>
+	    </div>
+	    <div class="description"> {{video.snippet['description']}}</div>
+	    <div style="inline-block">
+	    	<i class="big Empty Heart icon"></i>
+	    </div>
+	  </div>
+	</article>
+</div>
+<div id="page"></div>
+<a id="load_more" role=button class=btn href="#">Load more video's</a>
+

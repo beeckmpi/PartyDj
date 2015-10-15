@@ -1,0 +1,11 @@
+../bower_components/angular/angular.js
+../bower_components/angular-route/angular-route.js
+../bower_components/jquery/dist/jquery.min.js
+../bower_components/semantic-ui/dist/semantic.min.js
+../bower_components/satellizer/satellizer.min.js
+//www.youtube.com/player_api
+front-app.js
+controllers/videos.js
+controllers/player.js
+https://apis.google.com/js/client:platform.js(async, defer)
+https://plus.google.com/js/client:plusone.js
